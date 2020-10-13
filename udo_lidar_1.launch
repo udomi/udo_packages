@@ -1,0 +1,33 @@
+<launch>
+
+    <arg name="use_rosbot" default="true"/>
+    <arg name="use_gazebo" default="false"/>
+    
+
+    <include if="$(arg use_gazebo)" file="$(find rosbot_gazebo)/launch/maze_world.launch"/>
+    <include if="$(arg use_gazebo)" file="$(find rosbot_gazebo)/launch/rosbot.launch"/>
+
+    <include file="$(find rplidar_ros)/launch/rplidar.launch"/> <!-- Rosbot 2.0-->
+
+    <!-- <include file="$(find rplidar_ros)/launch/rplidar_a3.launch"/> --> <!-- Rosbot PRO-->
+
+    <node if="$(arg use_rosbot)" pkg="udo_package" type="drive_controller_node" name="drive_controller"/>
+
+    <!--  ROSbot 2.0 -->
+    <include if="$(arg rosbot)" file="$(find rosbot_ekf)/launch/rosserial_bridge.launch" /> 
+
+    <!-- ROSbot 2.0 PRO -->
+    <!-- 
+    <include file="$(find rosbot_ekf)/launch/rosserial_bridge.launch">
+        <arg name="serial_port" value="/dev/ttyS4"/>
+        <arg name="serial_baudrate" value="460800"/>
+    </include> 
+    -->
+
+    <node if="$(arg use_rosbot)" pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0 3.14 0 0 base_link laser_frame 100" />
+
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/>
+
+    <node pkg="rviz" type="rviz" name="rviz"/>
+
+</launch>

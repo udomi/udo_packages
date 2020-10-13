@@ -1,0 +1,9 @@
+<launch>
+
+    <include file="$(find rosbot_ekf)/launch/all.launch"/>
+    <include file="$(find astra_launch)/launch/astra.launch"/>
+    <include file="$(find rplidar_ros)/launch/rplidar.launch"/> 
+    
+    <node name="udo" pkg="udo_package" type="drive_1.py" output="screen"/>
+
+</launch>

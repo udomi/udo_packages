@@ -1,0 +1,16 @@
+<launch>
+
+    <include file="$(find astra_launch)/launch/astra.launch"/>
+    <include file="$(find rosbot_ekf)/launch/all.launch"/>
+    <include file="$(find rplidar_ros)/launch/rplidar.launch"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find rosbot_description)/urdf/rosbot.xacro'"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <node name="drive_controller" pkg="udo_package" type="drive_controller_node"/>
+    
+    <node pkg="tf" type="static_transform_publisher" name="laser_broadcaster" args="0 0 0.0 3.14 0 0 base_link laser 100" />   
+   <!--  <node pkg="tf" type="static_transform_publisher" name="camera_broadcaster" args="0 0 0.17 0 0 0 base_link camera_link 100" /> -->
+          
+      
+</launch>
+
+
